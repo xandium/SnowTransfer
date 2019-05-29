@@ -1,23 +1,23 @@
-const Endpoints = require('../Endpoints');
+const Endpoints = require("../Endpoints");
 
 /**
  * Methods for interacting with emojis
  */
 class EmojiMethods {
-    /**
-     * Create a new Emoji Method handler
-     *
-     * Usually SnowTransfer creates a method handler for you, this is here for completion
-     *
-     * You can access the methods listed via `client.emoji.method`, where `client` is an initialized SnowTransfer instance
-     * @param {RequestHandler} requestHandler - request handler that calls the rest api
-     * @constructor
-     */
-    constructor(requestHandler) {
-        this.requestHandler = requestHandler;
-    }
+  /**
+   * Create a new Emoji Method handler
+   *
+   * Usually SnowTransfer creates a method handler for you, this is here for completion
+   *
+   * You can access the methods listed via `client.emoji.method`, where `client` is an initialized SnowTransfer instance
+   * @param {RequestHandler} requestHandler - request handler that calls the rest api
+   * @constructor
+   */
+  constructor(requestHandler) {
+    this.requestHandler = requestHandler;
+  }
 
-    /**
+  /**
      * Get a list of emojis of a guild
      * @param {String} guildId - Id of the guild
      * @returns {Promise.<Emoji[]>} Array of [emoji objects](https://discordapp.com/developers/docs/resources/emoji#emoji-object)
@@ -26,11 +26,15 @@ class EmojiMethods {
      |--------------------|----------:|
      | MANAGE_EMOJIS      |    always |
      */
-    async getEmojis(guildId) {
-        return this.requestHandler.request(Endpoints.GUILD_EMOJIS(guildId), 'get', 'json');
-    }
+  async getEmojis(guildId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_EMOJIS(guildId),
+      "get",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Get an emoji via guildId + emojiId
      * @param {String} guildId - Id of the guild
      * @param {String} emojiId - Id of the emoji
@@ -40,11 +44,15 @@ class EmojiMethods {
      |--------------------|----------:|
      | MANAGE_EMOJIS      |    always |
      */
-    async getEmoji(guildId, emojiId) {
-        return this.requestHandler.request(Endpoints.GUILD_EMOJI(guildId, emojiId), 'get', 'json');
-    }
+  async getEmoji(guildId, emojiId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_EMOJI(guildId, emojiId),
+      "get",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Create a new Emoji
      * @param {String} guildId - Id of the guild
      * @param {Object} data - Emoji data, check the example
@@ -65,11 +73,16 @@ class EmojiMethods {
      * }
      * client.emoji.createEmoji('guild id', emojiData)
      */
-    async createEmoji(guildId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_EMOJIS(guildId), 'post', 'json', data);
-    }
+  async createEmoji(guildId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_EMOJIS(guildId),
+      "post",
+      "json",
+      data
+    );
+  }
 
-    /**
+  /**
      * Update an existing emoji
      * @param {String} guildId - Id of the guild
      * @param {String} emojiId - Id of the emoji
@@ -88,11 +101,15 @@ class EmojiMethods {
      * }
      * client.emoji.updateEmoji('guild id', 'emoji id', emojiData)
      */
-    async updateEmoji(guildId, emojiId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_EMOJI(guildId, emojiId), 'patch', data);
-    }
+  async updateEmoji(guildId, emojiId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_EMOJI(guildId, emojiId),
+      "patch",
+      data
+    );
+  }
 
-    /**
+  /**
      * Delete a emoji
      * @param {String} guildId - Id of the guild
      * @param {String} emojiId - Id of the emoji
@@ -102,10 +119,12 @@ class EmojiMethods {
      |--------------------|----------:|
      | MANAGE_EMOJIS      |    always |
      */
-    async deleteEmoji(guildId, emojiId) {
-        return this.requestHandler.request(Endpoints.GUILD_EMOJI(guildId, emojiId), 'delete');
-    }
-
+  async deleteEmoji(guildId, emojiId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_EMOJI(guildId, emojiId),
+      "delete"
+    );
+  }
 }
 
 /**

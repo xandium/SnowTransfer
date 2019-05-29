@@ -1,4 +1,4 @@
-const Snowtransfer = require('./src/SnowTransfer');
+const Snowtransfer = require("./src/SnowTransfer");
 
 /**
  * Create a new SnowTransfer instance
@@ -7,7 +7,7 @@ const Snowtransfer = require('./src/SnowTransfer');
  * @constructor
  */
 function SnowTransfer(...args) {
-    return new Snowtransfer(...args);
+  return new Snowtransfer(...args);
 }
 module.exports.SnowTransfer = SnowTransfer;
 module.exports = SnowTransfer;

@@ -1,36 +1,40 @@
-const Endpoints = require('../Endpoints');
-const Constants = require('../Constants');
+const Endpoints = require("../Endpoints");
+const Constants = require("../Constants");
 
 /**
  * Methods for interacting with Channels and Messages
  */
 class ChannelMethods {
-    /**
-     * Create a new Channel Method handler
-     *
-     * Usually SnowTransfer creates a method handler for you, this is here for completion
-     *
-     * You can access the methods listed via `client.channel.method`, where `client` is an initialized SnowTransfer instance
-     * @param {RequestHandler} requestHandler - request handler that calls the rest api
-     * @constructor
-     */
-    constructor(requestHandler) {
-        this.requestHandler = requestHandler;
-    }
+  /**
+   * Create a new Channel Method handler
+   *
+   * Usually SnowTransfer creates a method handler for you, this is here for completion
+   *
+   * You can access the methods listed via `client.channel.method`, where `client` is an initialized SnowTransfer instance
+   * @param {RequestHandler} requestHandler - request handler that calls the rest api
+   * @constructor
+   */
+  constructor(requestHandler) {
+    this.requestHandler = requestHandler;
+  }
 
-    /**
-     * Get a channel via Id
-     * @param {String} channelId - Id of the channel
-     * @returns {Promise.<Channel>} - [discord channel](https://discordapp.com/developers/docs/resources/channel#channel-object) object
-     * @example
-     * let client = new SnowTransfer('TOKEN')
-     * let channel = await client.channel.getChannel('channel id')
-     */
-    async getChannel(channelId) {
-        return this.requestHandler.request(Endpoints.CHANNEL(channelId), 'get', 'json');
-    }
+  /**
+   * Get a channel via Id
+   * @param {String} channelId - Id of the channel
+   * @returns {Promise.<Channel>} - [discord channel](https://discordapp.com/developers/docs/resources/channel#channel-object) object
+   * @example
+   * let client = new SnowTransfer('TOKEN')
+   * let channel = await client.channel.getChannel('channel id')
+   */
+  async getChannel(channelId) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL(channelId),
+      "get",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Update a channel
      * @param {String} channelId - Id of the channel
      * @param {Object} data - Data to send
@@ -56,11 +60,16 @@ class ChannelMethods {
      * }
      * client.channel.updateChannel('channel id', updateData)
      */
-    async updateChannel(channelId, data) {
-        return this.requestHandler.request(Endpoints.CHANNEL(channelId), 'patch', 'json', data);
-    }
+  async updateChannel(channelId, data) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL(channelId),
+      "patch",
+      "json",
+      data
+    );
+  }
 
-    /**
+  /**
      * Delete a channel via Id
      *
      * This either **deletes** a Guild Channel or **closes** a Direct Message Channel
@@ -75,11 +84,15 @@ class ChannelMethods {
      |--------------------|---------------------------------:|
      | MANAGE_CHANNELS    |    When deleting a Guild Channel |
      */
-    async deleteChannel(channelId) {
-        return this.requestHandler.request(Endpoints.CHANNEL(channelId), 'delete', 'json');
-    }
+  async deleteChannel(channelId) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL(channelId),
+      "delete",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Get a list of messages from a channel
      * @param {String} channelId - Id of the channel
      * @param {Object} [options]
@@ -101,24 +114,33 @@ class ChannelMethods {
      * }
      * let messages = await client.channel.getChannelMessages('channel id', options);
      */
-    async getChannelMessages(channelId, options = {}) {
-        if (options.around) {
-            delete options.before;
-            delete options.after;
-        } else if (options.before) {
-            delete options.around;
-            delete options.after;
-        } else if (options.after) {
-            delete options.before;
-            delete options.around;
-        }
-        if (options.limit > Constants.GET_CHANNEL_MESSAGES_MAX_RESULTS) {
-            throw new Error(`The maximum amount of messages that may be requested is ${Constants.GET_CHANNEL_MESSAGES_MAX_RESULTS}`);
-        }
-        return this.requestHandler.request(Endpoints.CHANNEL_MESSAGES(channelId), 'get', 'json', options);
+  async getChannelMessages(channelId, options = {}) {
+    if (options.around) {
+      delete options.before;
+      delete options.after;
+    } else if (options.before) {
+      delete options.around;
+      delete options.after;
+    } else if (options.after) {
+      delete options.before;
+      delete options.around;
     }
+    if (options.limit > Constants.GET_CHANNEL_MESSAGES_MAX_RESULTS) {
+      throw new Error(
+        `The maximum amount of messages that may be requested is ${
+          Constants.GET_CHANNEL_MESSAGES_MAX_RESULTS
+        }`
+      );
+    }
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_MESSAGES(channelId),
+      "get",
+      "json",
+      options
+    );
+  }
 
-    /**
+  /**
      * Get a single message via Id
      * @param {String} channelId - Id of the channel
      * @param {String} messageId - Id of the message
@@ -133,12 +155,15 @@ class ChannelMethods {
      * let client = new SnowTransfer('TOKEN')
      * let message = await client.channel.getChannelMessage('channel id', 'message id')
      */
-    async getChannelMessage(channelId, messageId) {
-        return this.requestHandler.request(Endpoints.CHANNEL_MESSAGE(channelId, messageId), 'get', 'json');
-    }
+  async getChannelMessage(channelId, messageId) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_MESSAGE(channelId, messageId),
+      "get",
+      "json"
+    );
+  }
 
-
-    /**
+  /**
      * Creates a new Message within a channel
      *
      * **Make sure to use a filename with a proper extension (e.g. png, jpeg, etc.) when you want to upload files**
@@ -182,46 +207,76 @@ class ChannelMethods {
      * let fileData = fs.readFileSync('nice_picture.png') // You should probably use fs.readFile, since it's asynchronous, synchronous methods may lag your bot.
      * client.channel.createMessage('channel id', {content: 'This is a nice picture', file: {name: 'Optional Filename.png', file: fileData}})
      */
-    async createMessage(channelId, data) {
-        if (typeof data !== 'string' && !data.content && !data.embed && !data.file) {
-            throw new Error('Missing content or embed');
-        }
-        if (typeof data === 'string') {
-            return this.requestHandler.request(Endpoints.CHANNEL_MESSAGES(channelId), 'post', 'json', {content: data});
-        } else if (data.file) {
-            return this.requestHandler.request(Endpoints.CHANNEL_MESSAGES(channelId), 'post', 'multipart', data);
-        } else {
-            return this.requestHandler.request(Endpoints.CHANNEL_MESSAGES(channelId), 'post', 'json', data);
-        }
+  async createMessage(channelId, data) {
+    if (
+      typeof data !== "string" &&
+      !data.content &&
+      !data.embed &&
+      !data.file
+    ) {
+      throw new Error("Missing content or embed");
     }
-
-    /**
-     * Edit a message sent by the current user
-     * @param {String} channelId - Id of the channel
-     * @param {String} messageId - Id of the message
-     * @param {Object|String} data - Data to send
-     * @param {String} [data.content] - Content of the message
-     * @param {Object} [data.embed] - Embed to send
-     * @returns {Promise.<Object>} [discord message](https://discordapp.com/developers/docs/resources/channel#message-object) object
-     * @example
-     * // Simple ping response
-     * let client = new SnowTransfer('TOKEN')
-     * let time = Date.now()
-     * let message = await client.channel.createMessage('channel id', 'pong')
-     * client.channel.editMessage('channel id', message.id, `pong ${Date.now() - time}ms`)
-     */
-    async editMessage(channelId, messageId, data) {
-        if (typeof data !== 'string' && !data.content && !data.embed) {
-            throw new Error('Missing content or embed');
-        }
-        if (typeof data === 'string') {
-            return this.requestHandler.request(Endpoints.CHANNEL_MESSAGE(channelId, messageId), 'patch', 'json', {content: data});
-        } else {
-            return this.requestHandler.request(Endpoints.CHANNEL_MESSAGE(channelId, messageId), 'patch', 'json', data);
-        }
+    if (typeof data === "string") {
+      return this.requestHandler.request(
+        Endpoints.CHANNEL_MESSAGES(channelId),
+        "post",
+        "json",
+        { content: data }
+      );
+    } else if (data.file) {
+      return this.requestHandler.request(
+        Endpoints.CHANNEL_MESSAGES(channelId),
+        "post",
+        "multipart",
+        data
+      );
+    } else {
+      return this.requestHandler.request(
+        Endpoints.CHANNEL_MESSAGES(channelId),
+        "post",
+        "json",
+        data
+      );
     }
+  }
 
-    /**
+  /**
+   * Edit a message sent by the current user
+   * @param {String} channelId - Id of the channel
+   * @param {String} messageId - Id of the message
+   * @param {Object|String} data - Data to send
+   * @param {String} [data.content] - Content of the message
+   * @param {Object} [data.embed] - Embed to send
+   * @returns {Promise.<Object>} [discord message](https://discordapp.com/developers/docs/resources/channel#message-object) object
+   * @example
+   * // Simple ping response
+   * let client = new SnowTransfer('TOKEN')
+   * let time = Date.now()
+   * let message = await client.channel.createMessage('channel id', 'pong')
+   * client.channel.editMessage('channel id', message.id, `pong ${Date.now() - time}ms`)
+   */
+  async editMessage(channelId, messageId, data) {
+    if (typeof data !== "string" && !data.content && !data.embed) {
+      throw new Error("Missing content or embed");
+    }
+    if (typeof data === "string") {
+      return this.requestHandler.request(
+        Endpoints.CHANNEL_MESSAGE(channelId, messageId),
+        "patch",
+        "json",
+        { content: data }
+      );
+    } else {
+      return this.requestHandler.request(
+        Endpoints.CHANNEL_MESSAGE(channelId, messageId),
+        "patch",
+        "json",
+        data
+      );
+    }
+  }
+
+  /**
      * Delete a message
      * @param {String} channelId - Id of the channel
      * @param {String} messageId - Id of the message
@@ -235,11 +290,15 @@ class ChannelMethods {
      * let client = new SnowTransfer('TOKEN')
      * client.channel.deleteMessage('channel id', 'message id')
      */
-    async deleteMessage(channelId, messageId) {
-        return this.requestHandler.request(Endpoints.CHANNEL_MESSAGE(channelId, messageId), 'delete', 'json');
-    }
+  async deleteMessage(channelId, messageId) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_MESSAGE(channelId, messageId),
+      "delete",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Bulk delete messages, messages may not be older than 2 weeks
      * @param {String} channelId - Id of the channel
      * @param {String[]} messages - array of message ids to delete
@@ -249,20 +308,34 @@ class ChannelMethods {
      |--------------------|----------:|
      | MANAGE_MESSAGES    |    always |
      */
-    async bulkDeleteMessages(channelId, messages) {
-        if (messages.length < Constants.BULK_DELETE_MESSAGES_MIN || messages.length > Constants.BULK_DELETE_MESSAGES_MAX) {
-            throw new Error(`Amount of messages to be deleted has to be between ${Constants.BULK_DELETE_MESSAGES_MIN} and ${Constants.BULK_DELETE_MESSAGES_MAX}`);
-        }
-        // (Current date - (discord epoch + 2 weeks)) * weird constant that everybody seems to use
-        let oldestSnowflake = (Date.now() - 1421280000000) * 4194304;
-        let forbiddenMessage = messages.find(m => m < oldestSnowflake);
-        if (forbiddenMessage) {
-            throw new Error(`The message ${forbiddenMessage} is older than 2 weeks and may not be deleted using the bulk delete endpoint`);
-        }
-        return this.requestHandler.request(Endpoints.CHANNEL_BULK_DELETE(channelId), 'post', 'json', {messages});
+  async bulkDeleteMessages(channelId, messages) {
+    if (
+      messages.length < Constants.BULK_DELETE_MESSAGES_MIN ||
+      messages.length > Constants.BULK_DELETE_MESSAGES_MAX
+    ) {
+      throw new Error(
+        `Amount of messages to be deleted has to be between ${
+          Constants.BULK_DELETE_MESSAGES_MIN
+        } and ${Constants.BULK_DELETE_MESSAGES_MAX}`
+      );
     }
+    // (Current date - (discord epoch + 2 weeks)) * weird constant that everybody seems to use
+    let oldestSnowflake = (Date.now() - 1421280000000) * 4194304;
+    let forbiddenMessage = messages.find(m => m < oldestSnowflake);
+    if (forbiddenMessage) {
+      throw new Error(
+        `The message ${forbiddenMessage} is older than 2 weeks and may not be deleted using the bulk delete endpoint`
+      );
+    }
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_BULK_DELETE(channelId),
+      "post",
+      "json",
+      { messages }
+    );
+  }
 
-    /**
+  /**
      * Adds a reaction to a message
      * @param {String} channelId - Id of the channel
      * @param {String} messageId - Id of the message
@@ -284,30 +357,48 @@ class ChannelMethods {
      * let client = new SnowTransfer('TOKEN');
      * client.channel.createReaction('channel Id', 'message Id', encodeURIComponent('😀'));
      */
-    async createReaction(channelId, messageId, emoji) {
-        return this.requestHandler.request(Endpoints.CHANNEL_MESSAGE_REACTION_USER(channelId, messageId, emoji, '@me'), 'put', 'json');
-    }
+  async createReaction(channelId, messageId, emoji) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_MESSAGE_REACTION_USER(
+        channelId,
+        messageId,
+        emoji,
+        "@me"
+      ),
+      "put",
+      "json"
+    );
+  }
 
-    /**
-     * Delete a reaction added by the current user from a message
-     * @param {String} channelId - Id of the channel
-     * @param {String} messageId - Id of the message
-     * @param {String} emoji - reaction emoji
-     * @returns {Promise.<void>} Resolves the Promise on successful execution
-     * @example
-     * // This example uses a discord emoji
-     * let client = new SnowTransfer('TOKEN');
-     * client.channel.deleteReactionSelf('channel Id', 'message Id', encodeURIComponent(':awooo:322522663304036352'));
-     * @example
-     * // using a utf-8 emoji
-     * let client = new SnowTransfer('TOKEN');
-     * client.channel.deleteReactionSelf('channel Id', 'message Id', encodeURIComponent('😀'));
-     */
-    async deleteReactionSelf(channelId, messageId, emoji) {
-        return this.requestHandler.request(Endpoints.CHANNEL_MESSAGE_REACTION_USER(channelId, messageId, emoji, '@me'), 'delete', 'json');
-    }
+  /**
+   * Delete a reaction added by the current user from a message
+   * @param {String} channelId - Id of the channel
+   * @param {String} messageId - Id of the message
+   * @param {String} emoji - reaction emoji
+   * @returns {Promise.<void>} Resolves the Promise on successful execution
+   * @example
+   * // This example uses a discord emoji
+   * let client = new SnowTransfer('TOKEN');
+   * client.channel.deleteReactionSelf('channel Id', 'message Id', encodeURIComponent(':awooo:322522663304036352'));
+   * @example
+   * // using a utf-8 emoji
+   * let client = new SnowTransfer('TOKEN');
+   * client.channel.deleteReactionSelf('channel Id', 'message Id', encodeURIComponent('😀'));
+   */
+  async deleteReactionSelf(channelId, messageId, emoji) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_MESSAGE_REACTION_USER(
+        channelId,
+        messageId,
+        emoji,
+        "@me"
+      ),
+      "delete",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Delete a reaction from a message
      * @param {String} channelId - Id of the channel
      * @param {String} messageId - Id of the message
@@ -327,26 +418,39 @@ class ChannelMethods {
      * let client = new SnowTransfer('TOKEN');
      * client.channel.deleteReaction('channel Id', 'message Id', encodeURIComponent('😀'), 'user Id');
      */
-    async deleteReaction(channelId, messageId, emoji, userId) {
-        return this.requestHandler.request(Endpoints.CHANNEL_MESSAGE_REACTION_USER(channelId, messageId, emoji, userId), 'delete', 'json');
-    }
+  async deleteReaction(channelId, messageId, emoji, userId) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_MESSAGE_REACTION_USER(
+        channelId,
+        messageId,
+        emoji,
+        userId
+      ),
+      "delete",
+      "json"
+    );
+  }
 
-    /**
-     * Get a list of users that reacted with a certain emoji on a certain message
-     * @param {String} channelId - Id of the channel
-     * @param {String} messageId - Id of the message
-     * @param {String} emoji - reaction emoji
-     * @returns {Promise.<User[]>} Array of [user objects](https://discordapp.com/developers/docs/resources/user#user-object)
-     * @example
-     * // This example uses a discord emoji
-     * let client = new SnowTransfer('TOKEN');
-     * let reactions = await client.channel.getReactions('channel Id', 'message Id', encodeURIComponent(':awooo:322522663304036352'));
-     */
-    async getReactions(channelId, messageId, emoji) {
-        return this.requestHandler.request(Endpoints.CHANNEL_MESSAGE_REACTION(channelId, messageId, emoji), 'get', 'json');
-    }
+  /**
+   * Get a list of users that reacted with a certain emoji on a certain message
+   * @param {String} channelId - Id of the channel
+   * @param {String} messageId - Id of the message
+   * @param {String} emoji - reaction emoji
+   * @returns {Promise.<User[]>} Array of [user objects](https://discordapp.com/developers/docs/resources/user#user-object)
+   * @example
+   * // This example uses a discord emoji
+   * let client = new SnowTransfer('TOKEN');
+   * let reactions = await client.channel.getReactions('channel Id', 'message Id', encodeURIComponent(':awooo:322522663304036352'));
+   */
+  async getReactions(channelId, messageId, emoji) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_MESSAGE_REACTION(channelId, messageId, emoji),
+      "get",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Delete all reactions from a message
      * @param {String} channelId - Id of the channel
      * @param {String} messageId - Id of the message
@@ -356,11 +460,15 @@ class ChannelMethods {
      |--------------------|----------:|
      | MANAGE_MESSAGES    |    always |
      */
-    async deleteAllReactions(channelId, messageId) {
-        return this.requestHandler.request(Endpoints.CHANNEL_MESSAGE_REACTIONS(channelId, messageId), 'delete', 'json');
-    }
+  async deleteAllReactions(channelId, messageId) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_MESSAGE_REACTIONS(channelId, messageId),
+      "delete",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Modify the permission overwrites of a channel
      * @param {String} channelId - Id of the channel
      * @param {String} permissionId - Id of the permission overwrite
@@ -371,11 +479,16 @@ class ChannelMethods {
      |--------------------|----------:|
      | MANAGE_ROLES       |    always |
      */
-    async editChannelPermission(channelId, permissionId, data) {
-        return this.requestHandler.request(Endpoints.CHANNEL_PERMISSION(channelId, permissionId), 'put', 'json', data);
-    }
+  async editChannelPermission(channelId, permissionId, data) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_PERMISSION(channelId, permissionId),
+      "put",
+      "json",
+      data
+    );
+  }
 
-    /**
+  /**
      * Delete a permission overwrite from a channel
      * @param {String} channelId - Id of the channel
      * @param {String} permissionId - Id of the permission overwrite
@@ -385,11 +498,15 @@ class ChannelMethods {
      |--------------------|----------:|
      | MANAGE_ROLES       |    always |
      */
-    async deleteChannelPermission(channelId, permissionId) {
-        return this.requestHandler.request(Endpoints.CHANNEL_PERMISSION(channelId, permissionId), 'delete', 'json');
-    }
+  async deleteChannelPermission(channelId, permissionId) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_PERMISSION(channelId, permissionId),
+      "delete",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Get a list of invites for a channel
      * @param {String} channelId - Id of the channel
      * @returns {Promise.<Invite[]>} Array of [invite objects](https://discordapp.com/developers/docs/resources/invite#invite-object) (with metadata)
@@ -398,11 +515,15 @@ class ChannelMethods {
      |--------------------|----------:|
      | MANAGE_CHANNELS    |    always |
      */
-    async getChannelInvites(channelId) {
-        return this.requestHandler.request(Endpoints.CHANNEL_INVITES(channelId), 'get', 'json');
-    }
+  async getChannelInvites(channelId) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_INVITES(channelId),
+      "get",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Create an invite for a channel
      *
      * If no data argument is passed, the invite will be created with the defaults listed below
@@ -418,31 +539,44 @@ class ChannelMethods {
      |-----------------------|----------:|
      | CREATE_INSTANT_INVITE |    always |
      */
-    async createChannelInvite(channelId, data = {}) {
-        return this.requestHandler.request(Endpoints.CHANNEL_INVITES(channelId), 'post', 'json', data);
-    }
+  async createChannelInvite(channelId, data = {}) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_INVITES(channelId),
+      "post",
+      "json",
+      data
+    );
+  }
 
-    /**
-     * Send an indicator that the current user is typing within a channel.
-     *
-     * **You should generally avoid this method unless used for longer computations (>1s)**
-     * @param {String} channelId - Id of the channel
-     * @returns {Promise.<void>} Resolves the Promise on successful execution
-     */
-    async startChannelTyping(channelId) {
-        return this.requestHandler.request(Endpoints.CHANNEL_TYPING(channelId), 'post', 'json');
-    }
+  /**
+   * Send an indicator that the current user is typing within a channel.
+   *
+   * **You should generally avoid this method unless used for longer computations (>1s)**
+   * @param {String} channelId - Id of the channel
+   * @returns {Promise.<void>} Resolves the Promise on successful execution
+   */
+  async startChannelTyping(channelId) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_TYPING(channelId),
+      "post",
+      "json"
+    );
+  }
 
-    /**
-     * Get a list of pinned messages for a channel
-     * @param {String} channelId - Id of the channel
-     * @returns {Promise.<Object[]>} Array of [message objects](https://discordapp.com/developers/docs/resources/channel#message-object)
-     */
-    async getChannelPinnedMessages(channelId) {
-        return this.requestHandler.request(Endpoints.CHANNEL_PINS(channelId), 'get', 'json');
-    }
+  /**
+   * Get a list of pinned messages for a channel
+   * @param {String} channelId - Id of the channel
+   * @returns {Promise.<Object[]>} Array of [message objects](https://discordapp.com/developers/docs/resources/channel#message-object)
+   */
+  async getChannelPinnedMessages(channelId) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_PINS(channelId),
+      "get",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Pin a message within a channel
      * @param {String} channelId - Id of the channel
      * @param {String} messageId - Id of the message
@@ -452,11 +586,15 @@ class ChannelMethods {
      |--------------------|----------:|
      | MANAGE_MESSAGES    |    always |
      */
-    async addChannelPinnedMessage(channelId, messageId) {
-        return this.requestHandler.request(Endpoints.CHANNEL_PIN(channelId, messageId), 'put', 'json');
-    }
+  async addChannelPinnedMessage(channelId, messageId) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_PIN(channelId, messageId),
+      "put",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Remove a pinned message from a channel
      * @param {String} channelId - Id of the channel
      * @param {String} messageId - Id of the message
@@ -466,11 +604,15 @@ class ChannelMethods {
      |--------------------|----------:|
      | MANAGE_MESSAGES    |    always |
      */
-    async removeChannelPinnedMessage(channelId, messageId) {
-        return this.requestHandler.request(Endpoints.CHANNEL_PIN(channelId, messageId), 'delete', 'json');
-    }
+  async removeChannelPinnedMessage(channelId, messageId) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_PIN(channelId, messageId),
+      "delete",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Add a user to a group dm
      * @param {String} channelId - Id of the channel
      * @param {String} userId - Id of the user to be removed
@@ -483,20 +625,28 @@ class ChannelMethods {
      |---------------|
      | gdm.join      |
      */
-    async addDmChannelRecipient(channelId, userId, data) {
-        return this.requestHandler.request(Endpoints.CHANNEL_RECIPIENT(channelId, userId), 'put', 'json', data);
-    }
+  async addDmChannelRecipient(channelId, userId, data) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_RECIPIENT(channelId, userId),
+      "put",
+      "json",
+      data
+    );
+  }
 
-    /**
-     * Remove a recipient from a group dm
-     * @param {String} channelId - Id of the channel
-     * @param {String} userId - Id of the user to be removed
-     * @returns {Promise.<void>} Resolves the Promise on successful execution
-     */
-    async removeDmChannelRecipient(channelId, userId) {
-        return this.requestHandler.request(Endpoints.CHANNEL_RECIPIENT(channelId, userId), 'delete', 'json');
-    }
-
+  /**
+   * Remove a recipient from a group dm
+   * @param {String} channelId - Id of the channel
+   * @param {String} userId - Id of the user to be removed
+   * @returns {Promise.<void>} Resolves the Promise on successful execution
+   */
+  async removeDmChannelRecipient(channelId, userId) {
+    return this.requestHandler.request(
+      Endpoints.CHANNEL_RECIPIENT(channelId, userId),
+      "delete",
+      "json"
+    );
+  }
 }
 
 // To anyone wanting to write a library: JUST COPY THIS SHIT, filling this out manually wasn't fun :<

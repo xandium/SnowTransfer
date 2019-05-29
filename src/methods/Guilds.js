@@ -1,58 +1,58 @@
-const Endpoints = require('../Endpoints');
+const Endpoints = require("../Endpoints");
 
 /**
  * Methods for interacting with Guilds
  */
 class GuildMethods {
-    /**
-     * Create a new Guild Method Handler
-     *
-     * Usually SnowTransfer creates a method handler for you, this is here for completion
-     *
-     * You can access the methods listed via `client.guild.method`, where `client` is an initialized SnowTransfer instance
-     * @param {RequestHandler} requestHandler - request handler that calls the rest api
-     */
-    constructor(requestHandler) {
-        this.requestHandler = requestHandler;
-    }
+  /**
+   * Create a new Guild Method Handler
+   *
+   * Usually SnowTransfer creates a method handler for you, this is here for completion
+   *
+   * You can access the methods listed via `client.guild.method`, where `client` is an initialized SnowTransfer instance
+   * @param {RequestHandler} requestHandler - request handler that calls the rest api
+   */
+  constructor(requestHandler) {
+    this.requestHandler = requestHandler;
+  }
 
-    /**
-     * Create a new Guild, **limited to 10 guilds (you may create more if you are whitelisted)**
-     * Check the [discord docs](https://discordapp.com/developers/docs/resources/guild#create-guild) for more infos
-     * @param {Object} data - data
-     * @param {String} data.name - name of the guild
-     * @param {String} [data.region] - [voice region](https://discordapp.com/developers/docs/resources/voice#voice-region-voice-region-structure)
-     * @param {String} [data.icon] - base64 encoded jpeg icon to use for the guild
-     * @param {Number} [data.verification_level] - guild [verification level](https://discordapp.com/developers/docs/resources/guild#guild-object-verification-level)
-     * @param {Number} [data.default_message_notifications] - default message [notification setting](https://discordapp.com/developers/docs/resources/guild#default-message-notification-level)
-     * @param {Channel[]} [data.channels] - array of [channels](https://discordapp.com/developers/docs/resources/channel#channel-object-channel-structure)
-     * @param {Role[]} [data.roles] - array of [roles](https://discordapp.com/developers/docs/resources/channel#channel-object-channel-structure)
-     * @returns {Promise.<Guild>} [Guild](https://discordapp.com/developers/docs/resources/guild#guild-object)
-     *
-     * @example
-     * // Creates a simple guild with the name "Demo Guild"
-     * let client = new SnowTransfer('TOKEN')
-     * let guildData = {
-     *   name: 'Demo Guild'
-     * }
-     * client.guild.createGuild(guildData)
-     */
-    async createGuild(data) {
-        return this.requestHandler.request(Endpoints.GUILDS, 'post', 'json', data);
-    }
+  /**
+   * Create a new Guild, **limited to 10 guilds (you may create more if you are whitelisted)**
+   * Check the [discord docs](https://discordapp.com/developers/docs/resources/guild#create-guild) for more infos
+   * @param {Object} data - data
+   * @param {String} data.name - name of the guild
+   * @param {String} [data.region] - [voice region](https://discordapp.com/developers/docs/resources/voice#voice-region-voice-region-structure)
+   * @param {String} [data.icon] - base64 encoded jpeg icon to use for the guild
+   * @param {Number} [data.verification_level] - guild [verification level](https://discordapp.com/developers/docs/resources/guild#guild-object-verification-level)
+   * @param {Number} [data.default_message_notifications] - default message [notification setting](https://discordapp.com/developers/docs/resources/guild#default-message-notification-level)
+   * @param {Channel[]} [data.channels] - array of [channels](https://discordapp.com/developers/docs/resources/channel#channel-object-channel-structure)
+   * @param {Role[]} [data.roles] - array of [roles](https://discordapp.com/developers/docs/resources/channel#channel-object-channel-structure)
+   * @returns {Promise.<Guild>} [Guild](https://discordapp.com/developers/docs/resources/guild#guild-object)
+   *
+   * @example
+   * // Creates a simple guild with the name "Demo Guild"
+   * let client = new SnowTransfer('TOKEN')
+   * let guildData = {
+   *   name: 'Demo Guild'
+   * }
+   * client.guild.createGuild(guildData)
+   */
+  async createGuild(data) {
+    return this.requestHandler.request(Endpoints.GUILDS, "post", "json", data);
+  }
 
-    /**
-     * Get a guild via Id
-     *
-     * **Your bot has to be a member of the guild for this function to work**
-     * @param {String} guildId - Id of the guild
-     * @returns {Promise.<Guild>} [Guild object](https://discordapp.com/developers/docs/resources/guild#guild-object)
-     */
-    async getGuild(guildId) {
-        return this.requestHandler.request(Endpoints.GUILD(guildId), 'get', 'json');
-    }
+  /**
+   * Get a guild via Id
+   *
+   * **Your bot has to be a member of the guild for this function to work**
+   * @param {String} guildId - Id of the guild
+   * @returns {Promise.<Guild>} [Guild object](https://discordapp.com/developers/docs/resources/guild#guild-object)
+   */
+  async getGuild(guildId) {
+    return this.requestHandler.request(Endpoints.GUILD(guildId), "get", "json");
+  }
 
-    /**
+  /**
      * Update a guild
      * @param {String} guildId - Id of the guild
      * @param {Object} data - data
@@ -79,33 +79,46 @@ class GuildMethods {
      * }
      * client.guild.updateGuild('guild Id', guildData)
      */
-    async updateGuild(guildId, data) {
-        return this.requestHandler.request(Endpoints.GUILD(guildId), 'patch', 'json', data);
-    }
+  async updateGuild(guildId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD(guildId),
+      "patch",
+      "json",
+      data
+    );
+  }
 
-    /**
-     * Delete a guild
-     *
-     * **Your bot has to be the owner of the guild to do this**
-     *
-     * **This action is irreversible, so use it with caution!**
-     * @param {String} guildId - Id of the guild
-     * @returns {Promise.<void>} Resolves the Promise on successful execution
-     */
-    async deleteGuild(guildId) {
-        return this.requestHandler.request(Endpoints.GUILD(guildId), 'delete', 'json');
-    }
+  /**
+   * Delete a guild
+   *
+   * **Your bot has to be the owner of the guild to do this**
+   *
+   * **This action is irreversible, so use it with caution!**
+   * @param {String} guildId - Id of the guild
+   * @returns {Promise.<void>} Resolves the Promise on successful execution
+   */
+  async deleteGuild(guildId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD(guildId),
+      "delete",
+      "json"
+    );
+  }
 
-    /**
-     * Get a list of channels for a guild
-     * @param {String} guildId - Id of the guild
-     * @returns {Promise.<Channel[]>} - list of [channels](https://discordapp.com/developers/docs/resources/channel#channel-object-channel-structure)
-     */
-    async getGuildChannels(guildId) {
-        return this.requestHandler.request(Endpoints.GUILD_CHANNELS(guildId), 'get', 'json');
-    }
+  /**
+   * Get a list of channels for a guild
+   * @param {String} guildId - Id of the guild
+   * @returns {Promise.<Channel[]>} - list of [channels](https://discordapp.com/developers/docs/resources/channel#channel-object-channel-structure)
+   */
+  async getGuildChannels(guildId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_CHANNELS(guildId),
+      "get",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Create a channel within a guild
      * @param {String} guildId - Id of the guild
      * @param {Object} data - channel properties
@@ -120,45 +133,64 @@ class GuildMethods {
      |--------------------|-----------:|
      | MANAGE_CHANNELS    | always    |
      */
-    async createGuildChannel(guildId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_CHANNELS(guildId), 'post', 'json', data);
-    }
+  async createGuildChannel(guildId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_CHANNELS(guildId),
+      "post",
+      "json",
+      data
+    );
+  }
 
-    /**
-     * Batch update the positions of channels
-     * @param {String} guildId - Id of the guild
-     * @param {Object[]} data
-     * @param {String} data[].id - Id of the channel
-     * @param {Number} data[].position - new position of the channel
-     * @returns {Promise.<void>} Resolves the Promise on successful execution
-     */
-    async updateChannelPositions(guildId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_CHANNELS(guildId), 'patch', 'json', data);
-    }
+  /**
+   * Batch update the positions of channels
+   * @param {String} guildId - Id of the guild
+   * @param {Object[]} data
+   * @param {String} data[].id - Id of the channel
+   * @param {Number} data[].position - new position of the channel
+   * @returns {Promise.<void>} Resolves the Promise on successful execution
+   */
+  async updateChannelPositions(guildId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_CHANNELS(guildId),
+      "patch",
+      "json",
+      data
+    );
+  }
 
-    /**
-     * Get a guild member via Id
-     * @param {String} guildId - Id of the guild
-     * @param {String} memberId - Id of the guild member
-     * @returns {Promise.<GuildMember>} - [guild member](https://discordapp.com/developers/docs/resources/guild#guild-member-object-guild-member-structure)
-     */
-    async getGuildMember(guildId, memberId) {
-        return this.requestHandler.request(Endpoints.GUILD_MEMBER(guildId, memberId), 'get', 'json');
-    }
+  /**
+   * Get a guild member via Id
+   * @param {String} guildId - Id of the guild
+   * @param {String} memberId - Id of the guild member
+   * @returns {Promise.<GuildMember>} - [guild member](https://discordapp.com/developers/docs/resources/guild#guild-member-object-guild-member-structure)
+   */
+  async getGuildMember(guildId, memberId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_MEMBER(guildId, memberId),
+      "get",
+      "json"
+    );
+  }
 
-    /**
-     * Get a list of guild members
-     * @param {String} guildId - Id of the guild
-     * @param {Object} [data] - query data
-     * @param {Number} [data.limit] - how many results should be returned
-     * @param {String} [data.after] - highest user Id after which results should be returned
-     * @returns {Promise.<GuildMember[]>} - list of [guild members](https://discordapp.com/developers/docs/resources/guild#guild-member-object-guild-member-structure)
-     */
-    async getGuildMembers(guildId, data = {}) {
-        return this.requestHandler.request(Endpoints.GUILD_MEMBERS(guildId), 'get', 'json', data);
-    }
+  /**
+   * Get a list of guild members
+   * @param {String} guildId - Id of the guild
+   * @param {Object} [data] - query data
+   * @param {Number} [data.limit] - how many results should be returned
+   * @param {String} [data.after] - highest user Id after which results should be returned
+   * @returns {Promise.<GuildMember[]>} - list of [guild members](https://discordapp.com/developers/docs/resources/guild#guild-member-object-guild-member-structure)
+   */
+  async getGuildMembers(guildId, data = {}) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_MEMBERS(guildId),
+      "get",
+      "json",
+      data
+    );
+  }
 
-    /**
+  /**
      * Add a guild member to a guild via oauth2 access token
      *
      * **You need the oauth2 `guilds.join` scope granted to the access_token**
@@ -192,11 +224,16 @@ class GuildMethods {
      * }
      * client.guild.addGuildMember('guildId', 'memberId', memberData)
      */
-    async addGuildMember(guildId, memberId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_MEMBER(guildId, memberId), 'put', 'json', data);
-    }
+  async addGuildMember(guildId, memberId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_MEMBER(guildId, memberId),
+      "put",
+      "json",
+      data
+    );
+  }
 
-    /**
+  /**
      * Update properties of a guild member
      *
      * **Check the table below to make sure you have the right permissions for the types of updates**
@@ -228,11 +265,16 @@ class GuildMethods {
      * }
      * client.guild.updateGuildMember('guild Id', 'memberId', memberData)
      */
-    async updateGuildMember(guildId, memberId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_MEMBER(guildId, memberId), 'patch', 'json', data);
-    }
+  async updateGuildMember(guildId, memberId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_MEMBER(guildId, memberId),
+      "patch",
+      "json",
+      data
+    );
+  }
 
-    /**
+  /**
      * Update the nick of the current user
      * @param {String} guildId - Id of the guild
      * @param {Object} data - object with a nick property
@@ -251,11 +293,16 @@ class GuildMethods {
      * }
      * client.guild.updateSelf('guildId', nickData)
      */
-    async updateSelf(guildId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_MEMBER_NICK(guildId, '@me'), 'patch', 'json', data);
-    }
+  async updateSelf(guildId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_MEMBER_NICK(guildId, "@me"),
+      "patch",
+      "json",
+      data
+    );
+  }
 
-    /**
+  /**
      * Add a role to a guild member
      * @param {String} guildId - Id of the guild
      * @param {String} memberId - Id of the guild member
@@ -266,11 +313,15 @@ class GuildMethods {
      |--------------------|----------:|
      | MANAGE_ROLES       |    always |
      */
-    async addGuildMemberRole(guildId, memberId, roleId) {
-        return this.requestHandler.request(Endpoints.GUILD_MEMBER_ROLE(guildId, memberId, roleId), 'put', 'json');
-    }
+  async addGuildMemberRole(guildId, memberId, roleId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_MEMBER_ROLE(guildId, memberId, roleId),
+      "put",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Remove a role from a guild member
      * @param {String} guildId - Id of the guild
      * @param {String} memberId - Id of the guild member
@@ -281,11 +332,15 @@ class GuildMethods {
      |--------------------|----------:|
      | MANAGE_ROLES       |    always |
      */
-    async removeGuildMemberRole(guildId, memberId, roleId) {
-        return this.requestHandler.request(Endpoints.GUILD_MEMBER_ROLE(guildId, memberId, roleId), 'delete', 'json');
-    }
+  async removeGuildMemberRole(guildId, memberId, roleId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_MEMBER_ROLE(guildId, memberId, roleId),
+      "delete",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Remove a guild member (aka kick them)
      * @param {String} guildId - Id of the guild
      * @param {String} memberId - Id of the guild member
@@ -305,11 +360,16 @@ class GuildMethods {
      * }
      * client.guild.removeGuildMember('guild Id', 'memberId', kickData)
      */
-    async removeGuildMember(guildId, memberId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_MEMBER(guildId, memberId), 'delete', 'json', data);
-    }
+  async removeGuildMember(guildId, memberId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_MEMBER(guildId, memberId),
+      "delete",
+      "json",
+      data
+    );
+  }
 
-    /**
+  /**
      * Get bans of a guild
      * @param {String} guildId - Id of the guild
      * @returns {Promise.<Ban[]>} - List of [bans](https://discordapp.com/developers/docs/resources/guild#ban-object-ban-structure)
@@ -318,11 +378,15 @@ class GuildMethods {
      |--------------------|----------:|
      | BAN_MEMBERS        |    always |
      */
-    async getGuildBans(guildId) {
-        return this.requestHandler.request(Endpoints.GUILD_BANS(guildId), 'get', 'json');
-    }
+  async getGuildBans(guildId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_BANS(guildId),
+      "get",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Ban a guild member
      * @param {String} guildId - Id of the guild
      * @param {String} memberId - Id of the guild member
@@ -344,11 +408,16 @@ class GuildMethods {
      * }
      * client.guild.createGuildBan('guild Id', 'memberId', banData)
      */
-    async createGuildBan(guildId, memberId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_BAN(guildId, memberId), 'put', 'json', data);
-    }
+  async createGuildBan(guildId, memberId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_BAN(guildId, memberId),
+      "put",
+      "json",
+      data
+    );
+  }
 
-    /**
+  /**
      * Remove a ban of a user
      * @param {String} guildId - Id of the guild
      * @param {String} memberId - Id of the guild member
@@ -360,11 +429,16 @@ class GuildMethods {
      |--------------------|----------:|
      | BAN_MEMBERS        |    always |
      */
-    async removeGuildBan(guildId, memberId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_BAN(guildId, memberId), 'delete', 'json', data);
-    }
+  async removeGuildBan(guildId, memberId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_BAN(guildId, memberId),
+      "delete",
+      "json",
+      data
+    );
+  }
 
-    /**
+  /**
      * Get a list of roles for a guild
      * @param {String} guildId - Id of the guild
      * @returns {Promise.<Role[]>} - array of [roles](https://discordapp.com/developers/docs/resources/channel#channel-object-channel-structure)
@@ -373,11 +447,15 @@ class GuildMethods {
      |--------------------|----------:|
      | MANAGE_ROLES       |    always |
      */
-    async getGuildRoles(guildId) {
-        return this.requestHandler.request(Endpoints.GUILD_ROLES(guildId), 'get', 'json');
-    }
+  async getGuildRoles(guildId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_ROLES(guildId),
+      "get",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Create a new Role
      * @param {String} guildId - Id of the guild
      * @param {Object} [data] - data with role properties
@@ -401,11 +479,16 @@ class GuildMethods {
      * }
      * client.guild.createGuildRole('guild Id', roleData)
      */
-    async createGuildRole(guildId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_ROLES(guildId), 'post', 'json', data);
-    }
+  async createGuildRole(guildId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_ROLES(guildId),
+      "post",
+      "json",
+      data
+    );
+  }
 
-    /**
+  /**
      * Batch modify the positions of roles
      * @param {String} guildId - Id of the guild
      * @param {Object[]} data - Array of objects with id and position properties
@@ -417,11 +500,16 @@ class GuildMethods {
      |--------------------|----------:|
      | MANAGE_ROLES       |    always |
      */
-    async updateGuildRolePositions(guildId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_ROLES(guildId), 'put', 'json', data);
-    }
+  async updateGuildRolePositions(guildId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_ROLES(guildId),
+      "put",
+      "json",
+      data
+    );
+  }
 
-    /**
+  /**
      * Update a guild role
      * @param {String} guildId - Id of the guild
      * @param {String} roleId - Id of the role
@@ -437,11 +525,16 @@ class GuildMethods {
      |--------------------|----------:|
      | MANAGE_ROLES       |    always |
      */
-    async updateGuildRole(guildId, roleId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_ROLE(guildId, roleId), 'patch', 'json', data);
-    }
+  async updateGuildRole(guildId, roleId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_ROLE(guildId, roleId),
+      "patch",
+      "json",
+      data
+    );
+  }
 
-    /**
+  /**
      * Delete a role from the guild
      * @param {String} guildId - Id of the guild
      * @param {String} roleId - Id of the role
@@ -451,11 +544,15 @@ class GuildMethods {
      |--------------------|----------:|
      | MANAGE_ROLES       |    always |
      */
-    async removeGuildRole(guildId, roleId) {
-        return this.requestHandler.request(Endpoints.GUILD_ROLE(guildId, roleId), 'delete', 'json');
-    }
+  async removeGuildRole(guildId, roleId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_ROLE(guildId, roleId),
+      "delete",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Get the amount of members that would be pruned when a prune with the passed amount of days would be started
      * @param {String} guildId - Id of the guild
      * @param {Object} data - Object with a days property
@@ -466,11 +563,16 @@ class GuildMethods {
      |--------------------|----------:|
      | KICK_MEMBERS       |    always |
      */
-    async getGuildPruneCount(guildId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_PRUNE(guildId), 'get', 'json', data);
-    }
+  async getGuildPruneCount(guildId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_PRUNE(guildId),
+      "get",
+      "json",
+      data
+    );
+  }
 
-    /**
+  /**
      * Start a prune
      * @param {String} guildId - Id of the guild
      * @param {Object} data - Object with a days property
@@ -481,20 +583,29 @@ class GuildMethods {
      |--------------------|----------:|
      | KICK_MEMBERS       |    always |
      */
-    async startGuildPrune(guildId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_PRUNE(guildId), 'post', 'json', data);
-    }
+  async startGuildPrune(guildId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_PRUNE(guildId),
+      "post",
+      "json",
+      data
+    );
+  }
 
-    /**
-     * Get a list of voice regions for the guild, includes vip-regions unlike voice.getVoiceRegions
-     * @param {String} guildId - Id of the guild
-     * @returns {Promise.<VoiceRegion[]>} List of [voice regions](https://discordapp.com/developers/docs/resources/voice#voice-region-object)
-     */
-    async getGuildVoiceRegions(guildId) {
-        return this.requestHandler.request(Endpoints.GUILD_VOICE_REGIONS(guildId), 'get', 'json');
-    }
+  /**
+   * Get a list of voice regions for the guild, includes vip-regions unlike voice.getVoiceRegions
+   * @param {String} guildId - Id of the guild
+   * @returns {Promise.<VoiceRegion[]>} List of [voice regions](https://discordapp.com/developers/docs/resources/voice#voice-region-object)
+   */
+  async getGuildVoiceRegions(guildId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_VOICE_REGIONS(guildId),
+      "get",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Get invites for a guild
      * @param {String} guildId - Id of the guild
      * @returns {Promise.<Invite[]>} List of [invites](https://discordapp.com/developers/docs/resources/invite#invite-object) (with metadata)
@@ -503,11 +614,15 @@ class GuildMethods {
      |--------------------|----------:|
      | MANAGE_GUILD       |    always |
      */
-    async getGuildInvites(guildId) {
-        return this.requestHandler.request(Endpoints.GUILD_INVITES(guildId), 'get', 'json');
-    }
+  async getGuildInvites(guildId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_INVITES(guildId),
+      "get",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Get integrations for a guild
      * @param {String} guildId - Id of the guild
      * @returns {Promise.<Object[]>} List of [integration objects](https://discordapp.com/developers/docs/resources/guild#integration-object)
@@ -516,11 +631,15 @@ class GuildMethods {
      |--------------------|----------:|
      | MANAGE_GUILD       |    always |
      */
-    async getGuildIntegrations(guildId) {
-        return this.requestHandler.request(Endpoints.GUILD_INTEGRATIONS(guildId), 'get', 'json');
-    }
+  async getGuildIntegrations(guildId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_INTEGRATIONS(guildId),
+      "get",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Attach a integration object from the user to the guild
      * @param {String} guildId - Id of the guild
      * @param {Object} data - Integration object with id and type properties
@@ -532,11 +651,16 @@ class GuildMethods {
      |--------------------|----------:|
      | MANAGE_GUILD       |    always |
      */
-    async createGuildIntegration(guildId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_INTEGRATIONS(guildId), 'post', 'json', data);
-    }
+  async createGuildIntegration(guildId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_INTEGRATIONS(guildId),
+      "post",
+      "json",
+      data
+    );
+  }
 
-    /**
+  /**
      * Update behaviour and settings of an [integration object](https://discordapp.com/developers/docs/resources/guild#integration-object)
      * @param {String} guildId - Id of the guild
      * @param {String} integrationId - Id of the integration
@@ -550,11 +674,16 @@ class GuildMethods {
      |--------------------|----------:|
      | MANAGE_GUILD       |    always |
      */
-    async updateGuildIntegration(guildId, integrationId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_INTEGRATION(guildId, integrationId), 'patch', 'json', data);
-    }
+  async updateGuildIntegration(guildId, integrationId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_INTEGRATION(guildId, integrationId),
+      "patch",
+      "json",
+      data
+    );
+  }
 
-    /**
+  /**
      * Delete a guild integratiom
      * @param {String} guildId - Id of the guild
      * @param {String} integrationId - Id of the integration
@@ -564,11 +693,15 @@ class GuildMethods {
      |--------------------|----------:|
      | MANAGE_GUILD       |    always |
      */
-    async removeGuildIntegration(guildId, integrationId) {
-        return this.requestHandler.request(Endpoints.GUILD_INTEGRATION(guildId, integrationId), 'delete', 'json');
-    }
+  async removeGuildIntegration(guildId, integrationId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_INTEGRATION(guildId, integrationId),
+      "delete",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Synchronize a guild integration
      * @param {String} guildId - Id of the guild
      * @param {String} integrationId - Id of the integration
@@ -578,11 +711,15 @@ class GuildMethods {
      |--------------------|----------:|
      | MANAGE_GUILD       |    always |
      */
-    async syncGuildIntegration(guildId, integrationId) {
-        return this.requestHandler.request(Endpoints.GUILD_INTEGRATION(guildId, integrationId), 'delete', 'json');
-    }
+  async syncGuildIntegration(guildId, integrationId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_INTEGRATION(guildId, integrationId),
+      "delete",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Get the guild embed object
      * @param {String} guildId - Id of the guild
      * @returns {Promise.<Object>} [Guild Embed](https://discordapp.com/developers/docs/resources/guild#guild-embed-object)
@@ -591,11 +728,15 @@ class GuildMethods {
      |--------------------|----------:|
      | MANAGE_GUILD       |    always |
      */
-    async getGuildEmbed(guildId) {
-        return this.requestHandler.request(Endpoints.GUILD_EMBED(guildId), 'get', 'json');
-    }
+  async getGuildEmbed(guildId) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_EMBED(guildId),
+      "get",
+      "json"
+    );
+  }
 
-    /**
+  /**
      * Update a guild embed object
      * @param {String} guildId - Id of the guild
      * @param {Object} data - data
@@ -607,10 +748,14 @@ class GuildMethods {
      |--------------------|----------:|
      | MANAGE_GUILD       |    always |
      */
-    async updateGuildEmbed(guildId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_EMBED(guildId), 'patch', 'json', data);
-    }
-
+  async updateGuildEmbed(guildId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_EMBED(guildId),
+      "patch",
+      "json",
+      data
+    );
+  }
 }
 
 /**

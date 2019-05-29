@@ -1,19 +1,19 @@
-const Endpoints = require('../Endpoints');
+const Endpoints = require("../Endpoints");
 
 class AuditLogMethods {
-    /**
-     * Create a new Audit Log Method Handler
-     *
-     * Usually SnowTransfer creates a method handler for you, this is here for completion
-     *
-     * You can access the methods listed via `client.auditLog.method`, where `client` is an initialized SnowTransfer instance
-     * @param {RequestHandler} requestHandler - request handler that calls the rest api
-     */
-    constructor(requestHandler) {
-        this.requestHandler = requestHandler;
-    }
+  /**
+   * Create a new Audit Log Method Handler
+   *
+   * Usually SnowTransfer creates a method handler for you, this is here for completion
+   *
+   * You can access the methods listed via `client.auditLog.method`, where `client` is an initialized SnowTransfer instance
+   * @param {RequestHandler} requestHandler - request handler that calls the rest api
+   */
+  constructor(requestHandler) {
+    this.requestHandler = requestHandler;
+  }
 
-    /**
+  /**
      * Get the audit logs of the specified guild id
      * @param {String} guildId - id of a guild
      * @param {Object} [data] - optional audit log filter values
@@ -27,9 +27,14 @@ class AuditLogMethods {
      |--------------------|
      | VIEW_AUDIT_LOG   |
      */
-    async getAuditLog(guildId, data) {
-        return this.requestHandler.request(Endpoints.GUILD_AUDIT_LOGS(guildId), 'get', 'json', data);
-    }
+  async getAuditLog(guildId, data) {
+    return this.requestHandler.request(
+      Endpoints.GUILD_AUDIT_LOGS(guildId),
+      "get",
+      "json",
+      data
+    );
+  }
 }
 
 /**
