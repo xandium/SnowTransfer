@@ -27,7 +27,7 @@ class RequestHandler {
       baseURL: this.options.baseHost + Endpoints.BASE_URL,
       headers: {
         Authorization: options.token,
-        "User-Agent": `DiscordBot (https://github.com/DasWolke/SnowTransfer, ${version})`
+        "User-Agent": `DiscordBot (Xancloud, ${version})`
       }
     });
     this.raven = options.raven ? options.raven : null;
@@ -109,6 +109,7 @@ class RequestHandler {
               );
               if (error.response.status === 429) {
                 //TODO WARN ABOUT THIS :< either bug or meme
+                console.log("429 - bug or meme?", endpoint, data);
                 this._applyRatelimitHeaders(
                   bkt,
                   error.response.headers,
