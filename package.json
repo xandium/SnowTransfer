@@ -21,11 +21,14 @@
   },
   "bugs": "https://github.com/DasWolke/SnowTransfer/issues",
   "author": "wolke <wolke@weeb.sh>",
+  "contributors": [
+    "Sharon Williams <swilliams@xandium.io> (https://xandium.io)"
+  ],
   "license": "MIT",
   "dependencies": {
     "axios": "~0.16.2",
     "form-data": "~2.3.1",
-    "@xandium/stargear": "^0.2.0"
+    "@xandium/stargear": "git+ssh://git@github.com/xandium/stargear"
   },
   "optionalDependencies": {
     "raven": "~2.2.1"
